@@ -1,2 +1,2 @@
-# qopBot
-For the qops
+# CopBot
+For the copps
