@@ -1,0 +1,2 @@
+# qopBot
+For the qops
