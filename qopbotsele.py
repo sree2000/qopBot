@@ -7,6 +7,7 @@ file: qopbotsele.py
 """
 
 import time
+from PIL import Image
 from selenium import webdriver
 from datetime import datetime
 from selenium.webdriver.support.select import Select
@@ -72,6 +73,33 @@ def clock():
         print("Current Time (Drop happens at 11pm): %s:%s:%s" % (now.hour, now.minute, now.second))
         time.sleep(1)
     refresh_browser()
+
+def compare(image1, image2):
+    """
+    compares the two images and determined the similarity percentage
+    :param: the two images being compared
+    :return: double the similarity percentage
+    """
+    #image1 = Image.open("image1.jpg")
+    #image2 = Image.open("image2.jpg")
+    assert image1.mode == image2.mode, "Different kinds of images."
+    pairs = zip(image1.getdata(), image2.getdata())
+    if len(image1.getbands()) == 1:
+    # for gray-scale jpegs
+        dif = sum(abs(p1-p2) for p1,p2 in pairs)
+else:
+    dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
+ncomponents = image1.size[0] * image1.size[1] * 3
+return 100-((dif / 255.0 * 100) / ncomponents)
+
+def determination(similarity_percentage):
+    """
+    determines if the similarity is high enough to determine a matching item
+    :param: the similarity precentage
+    :return: true if it is above the threshold false otherwise
+    """
+    threshold = 85.5
+    return similarity_percentage > threshold
 
 def refresh_browser():
     """
