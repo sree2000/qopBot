@@ -87,10 +87,10 @@ def compare(image1, image2):
     if len(image1.getbands()) == 1:
     # for gray-scale jpegs
         dif = sum(abs(p1-p2) for p1,p2 in pairs)
-else:
-    dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
-ncomponents = image1.size[0] * image1.size[1] * 3
-return 100-((dif / 255.0 * 100) / ncomponents)
+    else:
+        dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
+    ncomponents = image1.size[0] * image1.size[1] * 3
+    return 100-((dif / 255.0 * 100) / ncomponents)
 
 def determination(similarity_percentage):
     """
@@ -100,6 +100,16 @@ def determination(similarity_percentage):
     """
     threshold = 85.5
     return similarity_percentage > threshold
+
+def interating_through_shop()
+    int i = 1
+    while(BROWSER.find_element_by_xpath(//div[@id='container']/article[i]/div/a/img).exist())
+        #need this to be an image saver
+        #image1 will be an image from the website
+        #image2 will be a local image that will be the target image
+        image1 = BROWSER.find_element_by_xpath(//div[@id='container']/article[8]/div/a/img).click()
+        if(determination(compare(image1, image2)))
+            #size_scroll() will be called with size and the xpath of the target image and size
 
 def refresh_browser():
     """
