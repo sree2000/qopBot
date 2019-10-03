@@ -103,13 +103,16 @@ def determination(similarity_percentage):
 
 def interating_through_shop()
     int i = 1
-    while(BROWSER.find_element_by_xpath(//div[@id='container']/article[i]/div/a/img).exist())
+    while(driver.findElement(By.xpath(//div[@id='container']/article[i]/div/a/img))!= null)
         #need this to be an image saver
         #image1 will be an image from the website
         #image2 will be a local image that will be the target image
-        image1 = BROWSER.find_element_by_xpath(//div[@id='container']/article[8]/div/a/img).click()
+        image1 = driver.findElement(By.xpath(//div[@id='container']/article[i]/div/a/img)).get()
+        #the line above is a place holder not .get is not something that extracts the image
         if(determination(compare(image1, image2)))
             #size_scroll() will be called with size and the xpath of the target image and size
+        else
+            i++
 
 def refresh_browser():
     """
