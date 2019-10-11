@@ -88,11 +88,11 @@ def size_scroll(clothing_size):
     to the user's size request in their profile
     :return: NONE
     """
-    BROWSER.find_element_by_xpath("//img[@alt='Zdtbz1vytcq']").click()
+    BROWSER.find_element_by_xpath("//select[@id='s']").click()
     BROWSER.implicitly_wait(5000)
     scroll = Select(BROWSER.find_element_by_css_selector('#s'))
+    BROWSER.implicitly_wait(5000)
     scroll.select_by_visible_text(clothing_size.strip())                  # chooses the size of clothing for user
-
 
 def add_to_cart():
     """
@@ -106,7 +106,7 @@ def add_to_cart():
 
 def product_choice(clothing_item):
     # TODO use the image processing algorithm to find the product desired on the screen
-    BROWSER.find_element_by_xpath("//img[@alt='Qdpvgkxh2o8']").click()
+    BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
     BROWSER.implicitly_wait(5000)
     return clothing_item
 

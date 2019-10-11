@@ -2,12 +2,17 @@
 import pymongo
 import gridfs
 from pymongo import MongoClient
-
+import cv2
 
 product_client = MongoClient("mongodb://localhost:4566/")       # connection to the database client
-db_products = product_client["Images"]                          # database your connecting to
-image_collection = db_products["Image"]                            # the collection in the database that's being connected
+db_products = product_client["Images"]        # database your connecting to
+image_collection = db_products["Image"]       # the collection in the database that's being connected
 
+grid_storage = gridfs.GridFS(db_products)     # connection of gridfs to product database
+
+
+product_image = cv2.imread('DB_PHOTOS/orange.jpg')
+image = cv2.cvtColor(product_image, cv2.COLOR_BGR2RGB)
 product_post = db_products.product_post
 
 
