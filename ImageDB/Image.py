@@ -1,10 +1,15 @@
-#mongo "mongodb+srv://product-images-g8rqq.mongodb.net/admin" --username 1dmironiuk
+# mongo "mongodb+srv://product-images-g8rqq.mongodb.net/admin" --username 1dmironiuk
 import pymongo
+import gridfs
 from pymongo import MongoClient
 
-product_cluster = MongoClient("mongo \"mongodb+srv://product-images-g8rqq.mongodb.net/admin\" --username 1dmironiuk")
-db_products = product_cluster["Images"]
-db_collection = db_products["Image"]
+
+product_client = MongoClient("mongodb://localhost:4566/")       # connection to the database client
+db_products = product_client["Images"]                          # database your connecting to
+image_collection = db_products["Image"]                            # the collection in the database that's being connected
+
+product_post = db_products.product_post
+
 
 # example on creating a post in the collection {"_id": 0, "name": "Tim", "score": 5}
 # insert one post db_collection.insert_one({})
