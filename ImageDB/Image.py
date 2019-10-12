@@ -1,7 +1,8 @@
 import gridfs
+import os
 import pymongo
 from pymongo import MongoClient
-import cv2
+
 
 product_client = MongoClient(
     'mongodb+srv://1dmironiuk:%211Supremebot@product-images-g8rqq.mongodb.net/test?retryWrites=true&w=majority')
@@ -10,19 +11,22 @@ image_collection = db_products["Image"]       # the collection in the database t
 
 grid_storage = gridfs.GridFS(db_products)     # connection of grid-fs to product database
 
-product_image = open('/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/orange.jpg', 'rb')
-product_data = product_image.read()
+directory = '/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/'
 
-product_post_stored = grid_storage.put(product_data)  # puts image into grid-fs
+for image in os.listdir(directory):             # iterates through image file
 
-# out = grid_storage.get(product_post_stored).read()
+    product_image = open(directory + image, 'rb')
+    product_data = product_image.read()
+    #product_post_stored = grid_storage.put(product_data)  # puts image into grid-fs
 
-post_comp = {
-    '_id': 'Orange T-Shirt',        # makes a relation of for the post
-    'product': product_post_stored
-}
+    # out = grid_storage.get(product_post_stored).read()
 
-image_collection.insert_one(post_comp)      # adds to the collection
+    #post_comp = {
+    #   '_id': 'Orange T-Shirt',        # makes a relation of for the post
+    #   'product': product_post_stored
+    #}
+
+    #image_collection.insert_one(post_comp)      # adds to the collection
 
 
 # example on creating a post in the collection {"_id": 0, "name": "Tim", "score": 5}
