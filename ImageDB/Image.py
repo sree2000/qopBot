@@ -1,19 +1,28 @@
-# mongo "mongodb+srv://product-images-g8rqq.mongodb.net/admin" --username 1dmironiuk
-import pymongo
 import gridfs
+import pymongo
 from pymongo import MongoClient
 import cv2
 
-product_client = MongoClient("mongodb://localhost:4566/")       # connection to the database client
+product_client = MongoClient(
+    'mongodb+srv://1dmironiuk:%211Supremebot@product-images-g8rqq.mongodb.net/test?retryWrites=true&w=majority')
 db_products = product_client["Images"]        # database your connecting to
 image_collection = db_products["Image"]       # the collection in the database that's being connected
 
-grid_storage = gridfs.GridFS(db_products)     # connection of gridfs to product database
+grid_storage = gridfs.GridFS(db_products)     # connection of grid-fs to product database
 
+product_image = open('/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/orange.jpg', 'rb')
+product_data = product_image.read()
 
-product_image = cv2.imread('DB_PHOTOS/orange.jpg')
-image = cv2.cvtColor(product_image, cv2.COLOR_BGR2RGB)
-product_post = db_products.product_post
+product_post_stored = grid_storage.put(product_data)  # puts image into grid-fs
+
+# out = grid_storage.get(product_post_stored).read()
+
+post_comp = {
+    '_id': 'Orange T-Shirt',        # makes a relation of for the post
+    'product': product_post_stored
+}
+
+image_collection.insert_one(post_comp)      # adds to the collection
 
 
 # example on creating a post in the collection {"_id": 0, "name": "Tim", "score": 5}
@@ -30,10 +39,6 @@ product_post = db_products.product_post
 #
 # db_collection.update_one({"_id":5}, {$set: {"name":tim}}) ===> finds one person with id 5 and changes their name to tim
 # ^^^ Check out update operators for updating a database
-#
-#
-#
-#
 #
 
 

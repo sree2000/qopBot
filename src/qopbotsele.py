@@ -88,11 +88,11 @@ def size_scroll(clothing_size):
     to the user's size request in their profile
     :return: NONE
     """
-    BROWSER.find_element_by_xpath("//select[@id='s']").click()
+    #BROWSER.find_element_by_xpath("//select[@id='s']").click()
     BROWSER.implicitly_wait(5000)
-    scroll = Select(BROWSER.find_element_by_css_selector('#s'))
-    BROWSER.implicitly_wait(5000)
-    scroll.select_by_visible_text(clothing_size.strip())                  # chooses the size of clothing for user
+    #scroll = Select(BROWSER.find_element_by_css_selector('#s'))
+    #BROWSER.implicitly_wait(5000)
+    #scroll.select_by_visible_text(clothing_size.strip())                  # chooses the size of clothing for user
 
 def add_to_cart():
     """
