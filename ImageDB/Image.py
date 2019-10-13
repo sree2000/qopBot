@@ -1,8 +1,6 @@
 import gridfs
 import os
-import pymongo
 from pymongo import MongoClient
-
 
 product_client = MongoClient(
     'mongodb+srv://1dmironiuk:%211Supremebot@product-images-g8rqq.mongodb.net/test?retryWrites=true&w=majority')
@@ -17,16 +15,18 @@ for image in os.listdir(directory):             # iterates through image file
 
     product_image = open(directory + image, 'rb')
     product_data = product_image.read()
-    #product_post_stored = grid_storage.put(product_data)  # puts image into grid-fs
 
-    # out = grid_storage.get(product_post_stored).read()
+    print(product_data)
+    product_post_stored = grid_storage.put(product_data)  # puts image into grid-fs
 
-    #post_comp = {
-    #   '_id': 'Orange T-Shirt',        # makes a relation of for the post
-    #   'product': product_post_stored
-    #}
+   # out = grid_storage.get(product_post_stored).read()
 
-    #image_collection.insert_one(post_comp)      # adds to the collection
+    post_comp = {
+       '_id': 'Orange T-Shirt',        # makes a relation of for the post
+       'product': product_post_stored
+    }
+
+    image_collection.insert_one(post_comp)      # adds to the collection
 
 
 # example on creating a post in the collection {"_id": 0, "name": "Tim", "score": 5}

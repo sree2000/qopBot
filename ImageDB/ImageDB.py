@@ -5,10 +5,10 @@ connection = sqlite3.connect('Image.py')
 
 connect = connection.cursor()
 
-# connect.execute("""CREATE TABLE Image (
-#     image_name text,
-#     image text
-#      )""")
+connect.execute("""CREATE TABLE Image (
+    image_name text,
+    image text
+     )""")
 
 connect.execute("INSERT INTO Image Values ('Yeet', 'Yurt')) ")
 
