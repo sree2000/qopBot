@@ -59,8 +59,7 @@ def excecute_collection_reboot(day_of_reboot):
 def main():
     dropdate = input("When is the date of the next drop? MM-DD-YYYY:\n")
     times = dropdate.split('-')
-    db_collection_reboot_day = int(times[1]) - 1
-    day_of_reboot = datetime.date(int(times[2]), int(times[0]), db_collection_reboot_day)
+    day_of_reboot = datetime.date(int(times[2]), int(times[0]), int(times[1]))
     excecute_collection_reboot(day_of_reboot)
 
-main()
+

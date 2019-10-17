@@ -149,6 +149,10 @@ def main2():
     file = open("userContstruct.txt")
     user_info = dictionary(file)
     print("qopbot here at your service!")
+    update = input("Do you want to update the photo database?\n If so can only update on dropday (Y/N):")
+    if update == 'Y':
+        ImageDB.Image.main()
+    print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
     clothing_category = input("What clothing type do you want to qop?\n")             # gets type of clothing user wants
