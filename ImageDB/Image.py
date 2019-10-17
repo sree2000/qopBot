@@ -4,24 +4,25 @@ from pymongo import MongoClient
 
 product_client = MongoClient(
     'mongodb+srv://qopinstore:%211Supremebot@qop-bot-xe3ad.mongodb.net/test?retryWrites=true&w=majority')
-db_products = product_client["Product-DB"]        # database your connecting to
+db_products = product_client["Product-DB"]                  # database your connecting to
 image_collection = db_products["Product-Collection"]       # the collection in the database that's being connected
 
 grid_storage = gridfs.GridFS(db_products)     # connection of grid-fs to product database
 
 directory = '/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/'
 
-for image in os.listdir(directory):             # iterates through image file
+for image in os.listdir(directory):             # iterates through image file to insert images
 
     product_image = open(directory + image, 'rb')
     product_data = product_image.read()
 
     product_post_stored = grid_storage.put(product_data)  # puts image into grid-fs
 
-   # out = grid_storage.get(product_post_stored).read()
+    image_str = image.split('.')
+    name = image_str[0]
 
     post_comp = {
-       '_id': 'Orange T-Shirt',        # makes a relation of for the post
+       '_id': name,
        'product': product_post_stored
     }
 
@@ -39,9 +40,7 @@ for image in os.listdir(directory):             # iterates through image file
 #
 # db_collection.delete_one({"_id": 1})
 # db_collection.delete_many({"_id": 1, 0, 6})
-#
-# ^^^ Check out update operators for updating a database
-#
+
 
 
 
