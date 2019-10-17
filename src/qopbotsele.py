@@ -5,14 +5,14 @@ Date: Project start: 02/15/18
 Purpose: Creates a local bot algorithm that essentially purchase supreme/ shoes at a very fast pace
 file: qopbotsele.py
 """
-
+import ImageDB.Image
 import time
 from selenium import webdriver
 from datetime import datetime
 from selenium.webdriver.support.select import Select
 
 CONSTANT_TIME = .001
-BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")
+BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")   # CHANGE CHROME DRIVER PATH!!!
 TopTypeArr = ["jackets", "shirts", "sweaters", "sweatshirts", "shirts"]
 BottomTypeArr = ["shorts", "pants"]
 
@@ -23,22 +23,22 @@ def dictionary(file):
     :param file: the file that contains the user information
     :return: a dictionary that contains client information
     """
-    dictionaryUser = dict()
-    userDataLine = file.readline().strip().split()
-    while userDataLine:
-        valueString = ""
-        firstWord = userDataLine[0]
-        for word in userDataLine:
-            if word != firstWord:
-                if len(userDataLine) == 2:
-                    valueString = valueString + word
+    dictionary_user = dict()
+    user_data_line = file.readline().strip().split()
+    while user_data_line:
+        value_string = ""
+        first_word = user_data_line[0]
+        for word in user_data_line:
+            if word != first_word:
+                if len(user_data_line) == 2:
+                    value_string = value_string + word
                 else:
-                    valueString = valueString + word + " "
-        if len(userDataLine) != 2:
-            valueString = valueString[0:len(valueString)-1]
-        dictionaryUser[firstWord] = valueString
-        userDataLine = file.readline().strip().split()
-    return dictionaryUser
+                    value_string = value_string + word + " "
+        if len(user_data_line) != 2:
+            value_string = value_string[0:len(value_string)-1]
+        dictionary_user[first_word] = value_string
+        user_data_line = file.readline().strip().split()
+    return dictionary_user
 
 def open_browser():
     """
@@ -50,13 +50,13 @@ def open_browser():
     BROWSER.get(main_sup_page)
 
 
-def clothing_type(desiredCategory, userInfo):
-    cat = desiredCategory.lower().strip()
+def clothing_type(desired_category, user_info):
+    cat = desired_category.lower().strip()
     if cat in TopTypeArr:
-        size = userInfo.get("SIZE_TOPS")
+        size = user_info.get("SIZE_TOPS")
         return size
     if cat in BottomTypeArr:
-        size = userInfo.get("SIZE_BOTTOMS")
+        size = user_info.get("SIZE_BOTTOMS")
         return size
     return cat
 
@@ -82,17 +82,17 @@ def refresh_browser():
     time.sleep(3)
     BROWSER.refresh()
 
-def size_scroll(clothingSize):
+def size_scroll(clothing_size):
     """
     Accesses the scroll bar and chooses the size in relation
     to the user's size request in their profile
     :return: NONE
     """
-    BROWSER.find_element_by_xpath("//img[@alt='Zdtbz1vytcq']").click()
+    #BROWSER.find_element_by_xpath("//select[@id='s']").click()
     BROWSER.implicitly_wait(5000)
-    scroll = Select(BROWSER.find_element_by_css_selector('#s'))
-    scroll.select_by_visible_text(clothingSize.strip())                  # chooses the size of clothing for user
-
+    #scroll = Select(BROWSER.find_element_by_css_selector('#s'))
+    #BROWSER.implicitly_wait(5000)
+    #scroll.select_by_visible_text(clothing_size.strip())                  # chooses the size of clothing for user
 
 def add_to_cart():
     """
@@ -104,11 +104,11 @@ def add_to_cart():
     BROWSER.find_element_by_link_text('checkout now').click()
 
 
-def product_choice(clothingItem):
+def product_choice(clothing_item):
     # TODO use the image processing algorithm to find the product desired on the screen
-    BROWSER.find_element_by_xpath("//img[@alt='Qdpvgkxh2o8']").click()
+    BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
     BROWSER.implicitly_wait(5000)
-    return clothingItem
+    return clothing_item
 
 
 
@@ -133,12 +133,12 @@ def auto_fill(userInfo):
     city.send_keys(userInfo.get('CITY'))
     state = BROWSER.find_element_by_id("order_billing_state")
     state.send_keys(userInfo.get('STATE'))
-    cardNum = BROWSER.find_element_by_id('cnb')
-    cardNum.send_keys(userInfo.get('CARD_NUMBER'))
-    expireMonth = BROWSER.find_element_by_id("credit_card_month")
-    expireMonth.send_keys(userInfo.get('EXPIRATION_MONTH'))
-    expireYear = BROWSER.find_element_by_id("credit_card_year")
-    expireYear.send_keys(userInfo.get('EXPIRATION_YEAR'))
+    card_num = BROWSER.find_element_by_id('cnb')
+    card_num.send_keys(userInfo.get('CARD_NUMBER'))
+    expire_month = BROWSER.find_element_by_id("credit_card_month")
+    expire_month.send_keys(userInfo.get('EXPIRATION_MONTH'))
+    expire_year = BROWSER.find_element_by_id("credit_card_year")
+    expire_year.send_keys(userInfo.get('EXPIRATION_YEAR'))
     cvv = BROWSER.find_element_by_id("vval")
     cvv.send_keys(userInfo.get('SECURITY_CODE'))
     BROWSER.find_element_by_css_selector('.hover > .iCheck-helper').click()
@@ -147,22 +147,26 @@ def auto_fill(userInfo):
 
 def main2():
     file = open("userContstruct.txt")
-    userInfo = dictionary(file)
+    user_info = dictionary(file)
     print("qopbot here at your service!")
+    update = input("Do you want to update the photo database?\n If so can only update on dropday (Y/N):")
+    if update == 'Y':
+        ImageDB.Image.main()
+    print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
-    clothingCategory = input("What clothing type do you want to qop?\n")             #gets type of clothing user wants
-    clothingItem = input("What clothing item do you want to qop?\n")
-    clothingColor = input("What clothing color or design would you like today?\n")
-    clothingSize = clothing_type(clothingCategory, userInfo)                         # gets size of clothing of user
+    clothing_category = input("What clothing type do you want to qop?\n")             # gets type of clothing user wants
+    clothing_item = input("What clothing item do you want to qop?\n")
+    clothing_color = input("What clothing color or design would you like today?\n")
+    clothing_size = clothing_type(clothing_category, user_info)                         # gets size of clothing of user
     open_browser()
-    product_choice(clothingItem)
+    product_choice(clothing_item)
     # TODO create program that goes onto supreme community to get all color configs for each product
-    size_scroll(clothingSize)
+    size_scroll(clothing_size)
     BROWSER.implicitly_wait(5000)
     add_to_cart()
     BROWSER.implicitly_wait(5000)
-    auto_fill(userInfo)
+    auto_fill(user_info)
 
 
 
