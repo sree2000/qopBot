@@ -5,7 +5,7 @@ Date: Project start: 02/15/18
 Purpose: Creates a local bot algorithm that essentially purchase supreme/ shoes at a very fast pace
 file: qopbotsele.py
 """
-
+import ImageDB.Image
 import time
 from selenium import webdriver
 from datetime import datetime
