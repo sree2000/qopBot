@@ -54,9 +54,9 @@ def choose_image(product_choice):
     for word in synth_jpg:
         jpg += (word + '-')
     final_jpg = jpg[0:len(jpg)-1]
-    return image_collection.find({'_id': final_jpg})
+    return image_collection.find_one({'_id': final_jpg})
 
-choose_image("Black Shirt")
+choose_image('Red Shirt')
 
 def excecute_collection_reboot(day_of_reboot):
     current_datetime = datetime.datetime.now()
@@ -69,7 +69,6 @@ def excecute_collection_reboot(day_of_reboot):
         add_pics_to_database()
         time.sleep(1)
         print("Imported photos to database")
-
 
 
 def main():
