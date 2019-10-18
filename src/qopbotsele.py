@@ -5,7 +5,7 @@ Date: Project start: 02/15/18
 Purpose: Creates a local bot algorithm that essentially purchase supreme/ shoes at a very fast pace
 file: qopbotsele.py
 """
-import ImageDB.Image
+import Databases.ImageDB
 import time
 from selenium import webdriver
 from datetime import datetime
@@ -181,12 +181,12 @@ def main2():
     print("qopbot here at your service!")
     update = input("Do you want to update the photo database?\nIf so can only update on dropday (Y/N): ")
     if update == 'Y':
-        ImageDB.Image.main()
+        Databases.ImageDB.main()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
-    ImageDB.Image.print_pic_inqueries()
+    Databases.ImageDB.print_pic_inqueries()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     clothing_item = input("What clothing item do you want to qop?\n")
-    product_image_from_database = ImageDB.Image.choose_image(clothing_item)
+    product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
     color = product_image_from_database['iso']                  # color of product => Orange, Red, NONE
     product_image = product_image_from_database['product']      # prints out ObjectId => 5da941b95af7078d03a97b9c
     print(product_image_from_database)

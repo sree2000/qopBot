@@ -7,12 +7,12 @@ import time
 
 product_client = MongoClient(
     'mongodb+srv://qopinstore:%211Supremebot@qop-bot-xe3ad.mongodb.net/test?retryWrites=true&w=majority')
-db_products = product_client["Product-DB"]              # database your connecting to
-image_collection = db_products["Product-Collection"]    # the collection in the database that's being connected
+db_products = product_client["Product-DB"]  # database your connecting to
+image_collection = db_products["Product-Collection"]  # the collection in the database that's being connected
 fs_collection = db_products["fs.chunks"]
 fs_files_collection = db_products["fs.files"]
 
-grid_storage = gridfs.GridFS(db_products)               # connection of grid-fs to product database
+grid_storage = gridfs.GridFS(db_products)  # connection of grid-fs to product database
 
 
 def add_pics_to_database():
@@ -42,6 +42,7 @@ def remove_pics_from_database():
     fs_collection.delete_many({})
     fs_files_collection.delete_many({})
 
+
 def print_pic_inqueries():
     print("What Clothing Items You Can Choose From:\n")
     collection_cursor = image_collection.find({})
@@ -50,19 +51,20 @@ def print_pic_inqueries():
         proper_arr = item_name_raw.split('-')
         print(proper_arr[0] + ' ' + proper_arr[1])
 
+
 def choose_image(product_choice):
     synth_jpg = product_choice.split(' ')
     jpg = ''
     for word in synth_jpg:
         jpg += (word + '-')
-    final_jpg = jpg[0:len(jpg)-1]
+    final_jpg = jpg[0:len(jpg) - 1]
     return image_collection.find_one({'_id': final_jpg})
 
 
 def excecute_collection_reboot(day_of_reboot):
     current_datetime = datetime.datetime.now()
     current_date = current_datetime.date()
-    if(current_date == day_of_reboot):
+    if (current_date == day_of_reboot):
         remove_pics_from_database()
         print("Removing last week's inquiries...\n...\n...")
         time.sleep(3)
@@ -77,4 +79,3 @@ def main():
     times = dropdate.split('-')
     day_of_reboot = datetime.date(int(times[2]), int(times[0]), int(times[1]))
     excecute_collection_reboot(day_of_reboot)
-
