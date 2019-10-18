@@ -13,7 +13,7 @@ from selenium.webdriver.support.select import Select
 
 CONSTANT_TIME = .001
 BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")   # CHANGE CHROME DRIVER PATH!!!
-TopTypeArr = ["jackets", "shirts", "sweaters", "sweatshirts", "shirts"]
+TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "shirts"]
 BottomTypeArr = ["shorts", "pants"]
 
 def dictionary(file):
@@ -149,9 +149,11 @@ def main2():
     file = open("userContstruct.txt")
     user_info = dictionary(file)
     print("qopbot here at your service!")
-    update = input("Do you want to update the photo database?\n If so can only update on dropday (Y/N):")
+    update = input("Do you want to update the photo database?\nIf so can only update on dropday (Y/N): ")
     if update == 'Y':
         ImageDB.Image.main()
+    print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
+    ImageDB.Image.print_pic_inqueries()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
