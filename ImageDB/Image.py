@@ -27,13 +27,15 @@ def add_pics_to_database():
 
         image_str = image.split('.')
         name = image_str[0]
-
+        iso = name.split('-')
         post_comp = {
             '_id': name,
-            'product': product_post_stored
+            'product': product_post_stored,
+            'iso': iso[0]
         }
 
         image_collection.insert_one(post_comp)
+
 
 def remove_pics_from_database():
     image_collection.delete_many({})
@@ -56,7 +58,6 @@ def choose_image(product_choice):
     final_jpg = jpg[0:len(jpg)-1]
     return image_collection.find_one({'_id': final_jpg})
 
-choose_image('Red Shirt')
 
 def excecute_collection_reboot(day_of_reboot):
     current_datetime = datetime.datetime.now()
@@ -76,5 +77,4 @@ def main():
     times = dropdate.split('-')
     day_of_reboot = datetime.date(int(times[2]), int(times[0]), int(times[1]))
     excecute_collection_reboot(day_of_reboot)
-
 
