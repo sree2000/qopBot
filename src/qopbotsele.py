@@ -13,7 +13,7 @@ from selenium.webdriver.support.select import Select
 
 CONSTANT_TIME = .001
 BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")   # CHANGE CHROME DRIVER PATH!!!
-TopTypeArr = ["jackets", "shirts", "sweaters", "sweatshirts", "shirts"]
+TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "shirts"]
 BottomTypeArr = ["shorts", "pants"]
 
 def dictionary(file):
@@ -189,15 +189,20 @@ def main2():
     file = open("userContstruct.txt")
     user_info = dictionary(file)
     print("qopbot here at your service!")
-    update = input("Do you want to update the photo database?\n If so can only update on dropday (Y/N):")
+    update = input("Do you want to update the photo database?\nIf so can only update on dropday (Y/N): ")
     if update == 'Y':
         ImageDB.Image.main()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
+    ImageDB.Image.print_pic_inqueries()
+    print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
+    clothing_item = input("What clothing item do you want to qop?\n")
+    split_identity = clothing_item.split(' ')
+    item_color = split_identity[0]
+    product_image_from_database = ImageDB.Image.choose_image(clothing_item)
+    print(product_image_from_database)
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
     clothing_category = input("What clothing type do you want to qop?\n")             # gets type of clothing user wants
-    clothing_item = input("What clothing item do you want to qop?\n")
-    clothing_color = input("What clothing color or design would you like today?\n")
     clothing_size = clothing_type(clothing_category, user_info)                         # gets size of clothing of user
     open_browser()
     product_choice(clothing_item)

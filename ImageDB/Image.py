@@ -40,6 +40,23 @@ def remove_pics_from_database():
     fs_collection.delete_many({})
     fs_files_collection.delete_many({})
 
+def print_pic_inqueries():
+    print("What Clothing Items You Can Choose From:\n")
+    collection_cursor = image_collection.find({})
+    for image in collection_cursor:
+        item_name_raw = image['_id']
+        proper_arr = item_name_raw.split('-')
+        print(proper_arr[0] + ' ' + proper_arr[1])
+
+def choose_image(product_choice):
+    synth_jpg = product_choice.split(' ')
+    jpg = ''
+    for word in synth_jpg:
+        jpg += (word + '-')
+    final_jpg = jpg[0:len(jpg)-1]
+    return image_collection.find_one({'_id': final_jpg})
+
+choose_image('Red Shirt')
 
 def excecute_collection_reboot(day_of_reboot):
     current_datetime = datetime.datetime.now()
@@ -52,8 +69,6 @@ def excecute_collection_reboot(day_of_reboot):
         add_pics_to_database()
         time.sleep(1)
         print("Imported photos to database")
-
-
 
 
 def main():
