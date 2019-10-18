@@ -49,7 +49,14 @@ def print_pic_inqueries():
         print(proper_arr[0] + ' ' + proper_arr[1])
 
 def choose_image(product_choice):
-    return
+    synth_jpg = product_choice.split(' ')
+    jpg = ''
+    for word in synth_jpg:
+        jpg += (word + '-')
+    final_jpg = jpg[0:len(jpg)-1]
+    return image_collection.find({'_id': final_jpg})
+
+choose_image("Black Shirt")
 
 def excecute_collection_reboot(day_of_reboot):
     current_datetime = datetime.datetime.now()
