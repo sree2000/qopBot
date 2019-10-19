@@ -5,7 +5,7 @@ Date: Project start: 02/15/18
 Purpose: Creates a local bot algorithm that essentially purchase supreme/ shoes at a very fast pace
 file: qopbotsele.py
 """
-import ImageDB.Image
+import Databases.ImageDB
 import time
 from selenium import webdriver
 from datetime import datetime
@@ -111,7 +111,6 @@ def iterating_through_shop():
             i=i #will be called with size and the xpath of the target image and size
         else:
             i=i+1
-
 def refresh_browser():
     """
     Once clock hits the mark desired it calls this function to refresh the page and then moves
@@ -121,17 +120,20 @@ def refresh_browser():
     time.sleep(3)
     BROWSER.refresh()
 
+def get_product_color(color):
+    return ''
+
 def size_scroll(clothing_size):
     """
     Accesses the scroll bar and chooses the size in relation
     to the user's size request in their profile
     :return: NONE
     """
-    #BROWSER.find_element_by_xpath("//select[@id='s']").click()
+    # BROWSER.find_element_by_xpath("//select[@id='s']").click()
     BROWSER.implicitly_wait(5000)
-    #scroll = Select(BROWSER.find_element_by_css_selector('#s'))
-    #BROWSER.implicitly_wait(5000)
-    #scroll.select_by_visible_text(clothing_size.strip())                  # chooses the size of clothing for user
+    # scroll = Select(BROWSER.find_element_by_css_selector('#s'))
+    # BROWSER.implicitly_wait(5000)
+    # scroll.select_by_visible_text(clothing_size.strip())            # chooses the size of clothing for user
 
 def add_to_cart():
     """
@@ -190,19 +192,19 @@ def main2():
     print("qopbot here at your service!")
     update = input("Do you want to update the photo database?\nIf so can only update on dropday (Y/N): ")
     if update == 'Y':
-        ImageDB.Image.main()
+        Databases.ImageDB.main()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
-    ImageDB.Image.print_pic_inqueries()
+    Databases.ImageDB.print_pic_inqueries()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     clothing_item = input("What clothing item do you want to qop?\n")
-    split_identity = clothing_item.split(' ')
-    item_color = split_identity[0]
-    product_image_from_database = ImageDB.Image.choose_image(clothing_item)
+    product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
+    color = product_image_from_database['iso']                  # color of product => Orange, Red, NONE
+    product_image = product_image_from_database['product']      # prints out ObjectId => 5da941b95af7078d03a97b9c
     print(product_image_from_database)
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
-    clothing_category = input("What clothing type do you want to qop?\n")             # gets type of clothing user wants
-    clothing_size = clothing_type(clothing_category, user_info)                         # gets size of clothing of user
+    clothing_category = input("What clothing type do you want to qop?\n")            # gets type of clothing user wants
+    clothing_size = clothing_type(clothing_category, user_info)                      # gets size of clothing of user
     open_browser()
     product_choice(clothing_item)
     # TODO create program that goes onto supreme community to get all color configs for each product
