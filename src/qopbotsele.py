@@ -100,6 +100,17 @@ def determination(similarity_percentage):
     threshold = 85.5
     return similarity_percentage > threshold
 
+def iterating_through_shop():
+    i = 1
+    while(BROWSER.find_element_by_css_selector("article:nth-child(i) img") !=0):
+        #image2 will be a local image that will be the target image
+        image1 = BROWSER.find_element_by_css_selector("article:nth-child(i) img").get()
+        #the line above is a place holder not .get is not something that extracts the image
+        #need to get image2
+        if(determination(compare(image1, image2))):
+            i=i #will be called with size and the xpath of the target image and size
+        else:
+            i=i+1
 def refresh_browser():
     """
     Once clock hits the mark desired it calls this function to refresh the page and then moves
