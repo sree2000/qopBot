@@ -6,6 +6,7 @@ Purpose: Creates a local bot algorithm that essentially purchase supreme/ shoes 
 file: qopbotsele.py
 """
 import Databases.ImageDB
+import Databases.UserDB
 import time
 from selenium import webdriver
 from datetime import datetime
@@ -13,7 +14,7 @@ from selenium.webdriver.support.select import Select
 
 CONSTANT_TIME = .001
 BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")   # CHANGE CHROME DRIVER PATH!!!
-TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "shirts"]
+TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "t-shirts"]
 BottomTypeArr = ["shorts", "pants"]
 
 def dictionary(file):
@@ -50,13 +51,13 @@ def open_browser():
     BROWSER.get(main_sup_page)
 
 
-def clothing_type(desired_category, user_info):
+def clothing_type(desired_category, user):
     cat = desired_category.lower().strip()
     if cat in TopTypeArr:
-        size = user_info.get("SIZE_TOPS")
+        size = user['shirt_size']
         return size
     if cat in BottomTypeArr:
-        size = user_info.get("SIZE_BOTTOMS")
+        size = user['num_pants_size']
         return size
     return cat
 
@@ -162,35 +163,36 @@ def auto_fill(userInfo):
     :return: NONE
     """
     name = BROWSER.find_element_by_id("order_billing_name")
-    name.send_keys(userInfo.get('FIRST_NAME') + ' ' + userInfo.get('LAST_NAME'))
+    name.send_keys(userInfo["first_name"] + ' ' + userInfo["last_name"])
     email = BROWSER.find_element_by_id("order_email")
-    email.send_keys(userInfo.get('EMAIL'))
+    email.send_keys(userInfo["email"])
     tel = BROWSER.find_element_by_id("order_tel")
-    tel.send_keys(userInfo.get('PHONE_NUMBER'))
+    tel.send_keys(userInfo["phone_number"])
     address = BROWSER.find_element_by_id("bo")
-    address.send_keys(userInfo.get('ADDRESS'))
+    address.send_keys(userInfo["address"])
     zip = BROWSER.find_element_by_id("order_billing_zip")
-    zip.send_keys(userInfo.get('POSTAL_CODE'))
+    zip.send_keys(userInfo["postal_code"])
     city = BROWSER.find_element_by_id("order_billing_city")
-    city.send_keys(userInfo.get('CITY'))
+    city.send_keys(userInfo["city"])
     state = BROWSER.find_element_by_id("order_billing_state")
-    state.send_keys(userInfo.get('STATE'))
+    state.send_keys(userInfo["state"])
     card_num = BROWSER.find_element_by_id('cnb')
-    card_num.send_keys(userInfo.get('CARD_NUMBER'))
+    card_num.send_keys(userInfo["card_number"])
     expire_month = BROWSER.find_element_by_id("credit_card_month")
-    expire_month.send_keys(userInfo.get('EXPIRATION_MONTH'))
+    expire_month.send_keys(userInfo['card_month'])
     expire_year = BROWSER.find_element_by_id("credit_card_year")
-    expire_year.send_keys(userInfo.get('EXPIRATION_YEAR'))
+    expire_year.send_keys(userInfo['card_year'])
     cvv = BROWSER.find_element_by_id("vval")
-    cvv.send_keys(userInfo.get('SECURITY_CODE'))
+    cvv.send_keys(userInfo["security_code"])
     BROWSER.find_element_by_css_selector('.hover > .iCheck-helper').click()
     BROWSER.find_element_by_css_selector('.checkout').click()
 
 
 def main2():
-    file = open("userContstruct.txt")
-    user_info = dictionary(file)
     print("qopbot here at your service!")
+    run_login_id = Databases.UserDB.main()
+    while run_login_id == None:
+        run_login_id = Databases.UserDB.main()
     update = input("Do you want to update the photo database?\nIf so can only update on dropday (Y/N): ")
     if update == 'Y':
         Databases.ImageDB.main()
@@ -201,11 +203,10 @@ def main2():
     product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
     color = product_image_from_database['iso']                  # color of product => Orange, Red, NONE
     product_image = product_image_from_database['product']      # prints out ObjectId => 5da941b95af7078d03a97b9c
-    print(product_image_from_database)
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
     clothing_category = input("What clothing type do you want to qop?\n")            # gets type of clothing user wants
-    clothing_size = clothing_type(clothing_category, user_info)                      # gets size of clothing of user
+    clothing_size = clothing_type(clothing_category, run_login_id)                      # gets size of clothing of user
     open_browser()
     product_choice(clothing_item)
     # TODO create program that goes onto supreme community to get all color configs for each product
@@ -213,7 +214,7 @@ def main2():
     BROWSER.implicitly_wait(5000)
     add_to_cart()
     BROWSER.implicitly_wait(5000)
-    auto_fill(user_info)
+    auto_fill(run_login_id)
 
 
 
