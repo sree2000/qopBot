@@ -11,19 +11,24 @@ database = product_client["Product-DB"]
 user_collection = database["User-Info-Collection"]
 
 def login(user_name, password):
-    return
-
-def alreadyExists(newID):
-    exists = user_collection.find({'_id': {'$in': newID}})
-    return exists
+    while exists:
+        name = user_collection.find_one({'_id': username})
+        if name != None:
+            print("Username already exists.")
+            username = input("UserName?: ")
+        else:
+            exists = False
+    exists = True
 
 def sign_up():
     print("Make a Username and Password...")
     exists = True
+    username = input("UserName?: ")
     while exists:
-        username = input("UserName?: ")
-        if alreadyExists(username):
+        name = user_collection.find_one({'_id': username})
+        if name != None:
             print("Username already exists.")
+            username = input("UserName?: ")
         else:
             exists = False
     password = input("Password?: ")
@@ -69,9 +74,7 @@ def sign_up():
 def remove_user_from_database(username):
     user_collection.delete_one({'_id'})
 
+
 sign_up()
-
-
-
 
 
