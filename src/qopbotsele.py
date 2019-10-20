@@ -17,30 +17,6 @@ BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")   # C
 TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "t-shirts"]
 BottomTypeArr = ["shorts", "pants"]
 
-def dictionary(file):
-    """
-    Creates a dictionary of user information which derives from the file thats
-    been called by the main() function
-    :param file: the file that contains the user information
-    :return: a dictionary that contains client information
-    """
-    dictionary_user = dict()
-    user_data_line = file.readline().strip().split()
-    while user_data_line:
-        value_string = ""
-        first_word = user_data_line[0]
-        for word in user_data_line:
-            if word != first_word:
-                if len(user_data_line) == 2:
-                    value_string = value_string + word
-                else:
-                    value_string = value_string + word + " "
-        if len(user_data_line) != 2:
-            value_string = value_string[0:len(value_string)-1]
-        dictionary_user[first_word] = value_string
-        user_data_line = file.readline().strip().split()
-    return dictionary_user
-
 def open_browser():
     """
     Opens the chrome browser using it's directory in terminal and using
