@@ -13,9 +13,10 @@ from datetime import datetime
 from selenium.webdriver.support.select import Select
 
 CONSTANT_TIME = .001
-BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")   # CHANGE CHROME DRIVER PATH!!!
+BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")  # CHANGE CHROME DRIVER PATH!!!
 TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "t-shirts"]
 BottomTypeArr = ["shorts", "pants"]
+
 
 def open_browser():
     """
@@ -49,24 +50,26 @@ def clock():
         print("Current Time (Drop happens at 11pm): %s:%s:%s" % (now.hour, now.minute, now.second))
         time.sleep(1)
     refresh_browser()
-    
+
+
 def compare(image1, image2):
     """
     compares the two images and determined the similarity percentage
     :param: the two images being compared
     :return: double the similarity percentage
     """
-    #image1 = Image.open("image1.jpg")
-    #image2 = Image.open("image2.jpg")
+    # image1 = Image.open("image1.jpg")
+    # image2 = Image.open("image2.jpg")
     assert image1.mode == image2.mode, "Different kinds of images."
     pairs = zip(image1.getdata(), image2.getdata())
     if len(image1.getbands()) == 1:
-    # for gray-scale jpegs
-        dif = sum(abs(p1-p2) for p1,p2 in pairs)
+        # for gray-scale jpegs
+        dif = sum(abs(p1 - p2) for p1, p2 in pairs)
     else:
-        dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
+        dif = sum(abs(c1 - c2) for p1, p2 in pairs for c1, c2 in zip(p1, p2))
     ncomponents = image1.size[0] * image1.size[1] * 3
-    return 100-((dif / 255.0 * 100) / ncomponents)
+    return 100 - ((dif / 255.0 * 100) / ncomponents)
+
 
 def determination(similarity_percentage):
     """
@@ -77,17 +80,19 @@ def determination(similarity_percentage):
     threshold = 85.5
     return similarity_percentage > threshold
 
+
 def iterating_through_shop(image_db):
     i = 1
-    while(BROWSER.find_element_by_css_selector("article:nth-child("+ i +") img") !=0):
-        #image2 will be a local image that will be the target image
-        image1 = BROWSER.find_element_by_css_selector("article:nth-child(i) img").get()
-        #the line above is a place holder not .get is not something that extracts the image
-        #need to get image2
-        if(determination(compare(image1, image_db))):
-            i=i #will be called with size and the xpath of the target image and size
+    while BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img") != 0:
+        # image2 will be a local image that will be the target image
+        image1 = BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img")
+        # the line above is a place holder not .get is not something that extracts the image
+        # need to get image2
+        if determination(compare(image1, image_db)):
+            i = i  # will be called with size and the xpath of the target image and size
         else:
-            i=i+1
+            i = i + 1
+
 
 def refresh_browser():
     """
@@ -98,8 +103,10 @@ def refresh_browser():
     time.sleep(3)
     BROWSER.refresh()
 
+
 def get_product_color(color):
     return ''
+
 
 def size_scroll(clothing_size):
     """
@@ -113,6 +120,7 @@ def size_scroll(clothing_size):
     # BROWSER.implicitly_wait(5000)
     # scroll.select_by_visible_text(clothing_size.strip())            # chooses the size of clothing for user
 
+
 def add_to_cart():
     """
     Adds the current item to your cart so it can begin autofilling
@@ -125,10 +133,10 @@ def add_to_cart():
 
 def product_choice(clothing_item):
     # TODO use the image processing algorithm to find the product desired on the screen
-    BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
+    # BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
+    iterating_through_shop(clothing_item)
     BROWSER.implicitly_wait(5000)
     return clothing_item
-
 
 
 def auto_fill(userInfo):
@@ -177,21 +185,19 @@ def main2():
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     clothing_item = input("What clothing item do you want to qop?\n")
     product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
-    color = product_image_from_database['iso']                  # color of product => Orange, Red, NONE
-    product_image = product_image_from_database['product']      # prints out ObjectId => 5da941b95af7078d03a97b9c
+    product_color = product_image_from_database['iso']  # color of product => Orange, Red, NONE
+    product_image = product_image_from_database['product']  # prints out ObjectId => 5da941b95af7078d03a97b9c
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
-    clothing_category = input("What clothing type do you want to qop?\n")            # gets type of clothing user wants
-    clothing_size = clothing_type(clothing_category, run_login_id)                      # gets size of clothing of user
+    clothing_category = input("What clothing type do you want to qop?\n")  # gets type of clothing user wants
+    clothing_size = clothing_type(clothing_category, run_login_id)  # gets size of clothing of user
     open_browser()
-    product_choice(clothing_item)
-    # TODO create program that goes onto supreme community to get all color configs for each product
+    product_choice(product_image)
     size_scroll(clothing_size)
     BROWSER.implicitly_wait(5000)
     add_to_cart()
     BROWSER.implicitly_wait(5000)
     auto_fill(run_login_id)
-
 
 
 main2()

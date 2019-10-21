@@ -1,9 +1,4 @@
-import gridfs
-import os
 from pymongo import MongoClient
-from datetime import time
-import datetime
-import time
 
 product_client = MongoClient(
     'mongodb+srv://qopinstore:%211Supremebot@qop-bot-xe3ad.mongodb.net/test?retryWrites=true&w=majority')

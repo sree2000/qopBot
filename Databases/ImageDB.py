@@ -43,6 +43,12 @@ def remove_pics_from_database():
     fs_files_collection.delete_many({})
 
 
+def get_image(tag_id):
+    entity = image_collection.find_one({'_id': tag_id})
+    image = entity['product']
+    return image
+
+
 def print_pic_inqueries():
     print("What Clothing Items You Can Choose From:\n")
     collection_cursor = image_collection.find({})
