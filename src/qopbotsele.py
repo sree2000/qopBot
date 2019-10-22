@@ -88,6 +88,10 @@ def iterating_through_shop(image_db):
         image1 = BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img")
         # the line above is a place holder not .get is not something that extracts the image
         # need to get image2
+        #add a .screenshot(self, filename)
+        print(type(image_db))
+        print(type(image1))
+        print(image1.mode)
         if determination(compare(image1, image_db)):
             i = i  # will be called with size and the xpath of the target image and size
         else:
