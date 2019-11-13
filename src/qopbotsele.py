@@ -8,6 +8,7 @@ file: qopbotsele.py
 import Databases.ImageDB
 import Databases.UserDB
 import time
+from PIL import Image
 from selenium import webdriver
 from datetime import datetime
 from selenium.webdriver.support.select import Select
@@ -82,18 +83,18 @@ def determination(similarity_percentage):
 
 
 def iterating_through_shop(image_db):
+    #image_db must be the image path name
     i = 1
     while BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img") != 0:
         # image2 will be a local image that will be the target image
-        image1 = BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img")
+        image = BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img")
         # the line above is a place holder not .get is not something that extracts the image
         # need to get image2
         #add a .screenshot(self, filename)
-        print(type(image_db))
-        print(type(image1))
-        print(image1.mode)
-        if determination(compare(image1, image_db)):
-            i = i  # will be called with size and the xpath of the target image and size
+        image.screenshot("image"+str(i)+".png")
+        image1 = Image.open("image"+str(i)+".png")
+        if determination(compare(image1, Image.open(image_db))):
+            return "li:nth-child(" + str(i) + ") img"
         else:
             i = i + 1
 
@@ -137,7 +138,8 @@ def add_to_cart():
 
 def product_choice(clothing_item):
     # TODO use the image processing algorithm to find the product desired on the screen
-    # BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
+    BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
+    BROWSER.find_element_by_css_selector(iterating_through_shop(clothing_item)).click()
     iterating_through_shop(clothing_item)
     BROWSER.implicitly_wait(5000)
     return clothing_item
@@ -191,6 +193,7 @@ def main2():
     product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
     product_color = product_image_from_database['iso']  # color of product => Orange, Red, NONE
     product_image = product_image_from_database['product']  # prints out ObjectId => 5da941b95af7078d03a97b9c
+    print(product_image)
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
     clothing_category = input("What clothing type do you want to qop?\n")  # gets type of clothing user wants

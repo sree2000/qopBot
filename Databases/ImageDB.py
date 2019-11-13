@@ -85,3 +85,6 @@ def main():
     times = drop_date.split('-')
     day_of_reboot = datetime.date(int(times[2]), int(times[0]), int(times[1]))
     excecute_collection_reboot(day_of_reboot)
+
+
+main()

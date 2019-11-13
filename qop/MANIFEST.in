@@ -1,5 +1,0 @@
-include nonocaptcha/data/*.*
-include nonocaptcha/nonocaptcha.example.yaml
-include README.rst
-include setup.py
-include CHANGES.md
