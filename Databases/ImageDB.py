@@ -54,6 +54,7 @@ def print_pic_inqueries():
     collection_cursor = image_collection.find({})
     for image in collection_cursor:
         item_name_raw = image['_id']
+        if len(item_name_raw) is 0: continue
         proper_arr = item_name_raw.split('-')
         print(proper_arr[0] + ' ' + proper_arr[1])
 

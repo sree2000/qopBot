@@ -188,7 +188,7 @@ def main2():
         Databases.ImageDB.main()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     Databases.ImageDB.print_pic_inqueries()
-    print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
+    print("__ n__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     clothing_item = input("What clothing item do you want to qop?\n")
     product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
     product_color = product_image_from_database['iso']  # color of product => Orange, Red, NONE
