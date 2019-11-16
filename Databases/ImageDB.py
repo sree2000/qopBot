@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from datetime import time
 import datetime
 import time
+import cv2
+import numpy
 
 product_client = MongoClient(
     'mongodb+srv://qopinstore:%211Supremebot@qop-bot-xe3ad.mongodb.net/test?retryWrites=true&w=majority')
@@ -11,13 +13,38 @@ db_products = product_client["Product-DB"]  # database your connecting to
 image_collection = db_products["Product-Collection"]  # the collection in the database that's being connected
 fs_collection = db_products["fs.chunks"]
 fs_files_collection = db_products["fs.files"]
+grid_storage = gridfs.GridFS(db_products)
 
-grid_storage = gridfs.GridFS(db_products)  # connection of grid-fs to product database
 
+def junk_add_to_database():
+    directory = '/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/'
+
+    img = cv2.imread(directory + 'Black-Shirt.jpg')
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    image_string = img.tostring()
+    image_id = grid_storage.put(image_string, encoding='utf-8')
+
+    post_comp = {
+        '_id': 'Black-Shirt',
+        'product': image_id,
+        'dtype': str(img.dtype),
+        'shape': img.shape
+    }
+
+    image_collection.insert_one(post_comp)
+
+
+def junk_get_from_database():
+    image = image_collection.find_one({'_id': 'Black-Shirt'})
+    image_out = grid_storage.get(image['product'])
+    img = numpy.frombuffer(image_out.read(), dtype=numpy.uint8)
+    img2 = numpy.reshape(img, image['shape'])
+    print(img2)
 
 def add_pics_to_database():
     directory = '/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/'
-
+    grid_storage = gridfs.GridFS(db_products)
     for image in os.listdir(directory):  # iterates through image file to insert images
 
         product_image = open(directory + image, 'rb')
@@ -31,7 +58,7 @@ def add_pics_to_database():
         post_comp = {
             '_id': name,
             'product': product_post_stored,
-            'iso': iso[0]
+            'iso': iso[0],
         }
 
         image_collection.insert_one(post_comp)
@@ -87,5 +114,5 @@ def main():
     day_of_reboot = datetime.date(int(times[2]), int(times[0]), int(times[1]))
     excecute_collection_reboot(day_of_reboot)
 
-
-main()
+remove_pics_from_database()
+junk_add_to_database()
