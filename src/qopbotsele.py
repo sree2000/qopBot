@@ -15,7 +15,7 @@ from selenium.webdriver.support.select import Select
 
 CONSTANT_TIME = .001
 BROWSER = webdriver.Chrome("/Users/renatabuczkowska/Desktop/chromedriver")  # CHANGE CHROME DRIVER PATH!!!
-TopTypeArr = ["new", "jackets", "shirts", "sweaters", "sweatshirts", "t-shirts"]
+TopTypeArr = ["jackets", "shirts", "sweaters", "sweatshirts", "t-shirts"]
 BottomTypeArr = ["shorts", "pants"]
 
 
@@ -138,11 +138,7 @@ def add_to_cart():
 
 def product_choice(clothing_item):
     # TODO use the image processing algorithm to find the product desired on the screen
-    BROWSER.find_element_by_xpath("//img[@alt='Gdyi96whugc']").click()
-    BROWSER.find_element_by_css_selector(iterating_through_shop(clothing_item)).click()
     iterating_through_shop(clothing_item)
-    BROWSER.implicitly_wait(5000)
-    return clothing_item
 
 
 def auto_fill(userInfo):
@@ -188,7 +184,7 @@ def main2():
         Databases.ImageDB.main()
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     Databases.ImageDB.print_pic_inqueries()
-    print("__ n__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
+    print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     clothing_item = input("What clothing item do you want to qop?\n")
     product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
     product_color = product_image_from_database['iso']  # color of product => Orange, Red, NONE
@@ -205,6 +201,5 @@ def main2():
     add_to_cart()
     BROWSER.implicitly_wait(5000)
     auto_fill(run_login_id)
-
 
 main2()

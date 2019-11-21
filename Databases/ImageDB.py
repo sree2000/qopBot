@@ -14,39 +14,14 @@ image_collection = db_products["Product-Collection"]  # the collection in the da
 fs_collection = db_products["fs.chunks"]
 fs_files_collection = db_products["fs.files"]
 grid_storage = gridfs.GridFS(db_products)
+grid_dict = {}
 
-
-def junk_add_to_database():
-    directory = '/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/'
-
-    img = cv2.imread(directory + 'Black-Shirt.jpg')
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-    image_string = img.tostring()
-    image_id = grid_storage.put(image_string, encoding='utf-8')
-
-    post_comp = {
-        '_id': 'Black-Shirt',
-        'product': image_id,
-        'dtype': str(img.dtype),
-        'shape': img.shape
-    }
-
-    image_collection.insert_one(post_comp)
-
-
-def junk_get_from_database():
-    image = image_collection.find_one({'_id': 'Black-Shirt'})
-    image_out = grid_storage.get(image['product'])
-    img = numpy.frombuffer(image_out.read(), dtype=numpy.uint8)
-    img2 = numpy.reshape(img, image['shape'])
-    print(img2)
 
 def add_pics_to_database():
     directory = '/Users/renatabuczkowska/Desktop/qop bot/qopBot/DB_PHOTOS/'
-    grid_storage = gridfs.GridFS(db_products)
     for image in os.listdir(directory):  # iterates through image file to insert images
-
+        if image == ".DS_Store":
+            continue
         product_image = open(directory + image, 'rb')
         product_data = product_image.read()
 
@@ -55,6 +30,9 @@ def add_pics_to_database():
         image_str = image.split('.')
         name = image_str[0]
         iso = name.split('-')
+
+        grid_dict[name] = product_post_stored
+
         post_comp = {
             '_id': name,
             'product': product_post_stored,
@@ -68,13 +46,13 @@ def remove_pics_from_database():
     image_collection.delete_many({})
     fs_collection.delete_many({})
     fs_files_collection.delete_many({})
+    grid_dict.clear()
 
 
-def get_image(tag_id):
-    entity = image_collection.find_one({'_id': tag_id})
-    image = entity['product']
-    return image
-
+def get_image(name):
+    image = grid_dict[name]
+    img = grid_storage.get(image).read()
+    return img
 
 def print_pic_inqueries():
     print("What Clothing Items You Can Choose From:\n")
@@ -114,5 +92,4 @@ def main():
     day_of_reboot = datetime.date(int(times[2]), int(times[0]), int(times[1]))
     excecute_collection_reboot(day_of_reboot)
 
-remove_pics_from_database()
-junk_add_to_database()
+main()
