@@ -4,8 +4,7 @@ from pymongo import MongoClient
 from datetime import time
 import datetime
 import time
-import cv2
-import numpy
+
 
 product_client = MongoClient(
     'mongodb+srv://qopinstore:%211Supremebot@qop-bot-xe3ad.mongodb.net/test?retryWrites=true&w=majority')
@@ -70,7 +69,7 @@ def choose_image(product_choice):
     for word in synth_jpg:
         jpg += (word + '-')
     final_jpg = jpg[0:len(jpg) - 1]
-    return image_collection.find_one({'_id': final_jpg})
+    return get_image(final_jpg)
 
 
 def excecute_collection_reboot(day_of_reboot):

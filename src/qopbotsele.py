@@ -83,14 +83,11 @@ def determination(similarity_percentage):
 
 
 def iterating_through_shop(image_db):
-    #image_db must be the image path name
     i = 1
     while BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img") != 0:
         # image2 will be a local image that will be the target image
         image = BROWSER.find_element_by_css_selector("li:nth-child(" + str(i) + ") img")
         # the line above is a place holder not .get is not something that extracts the image
-        # need to get image2
-        #add a .screenshot(self, filename)
         image.screenshot("image"+str(i)+".png")
         image1 = Image.open("image"+str(i)+".png")
         if determination(compare(image1, Image.open(image_db))):
@@ -135,10 +132,6 @@ def add_to_cart():
     BROWSER.find_element_by_name("commit").click()
     BROWSER.find_element_by_link_text('checkout now').click()
 
-
-def product_choice(clothing_item):
-    # TODO use the image processing algorithm to find the product desired on the screen
-    iterating_through_shop(clothing_item)
 
 
 def auto_fill(userInfo):
@@ -187,15 +180,14 @@ def main2():
     print("__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __")
     clothing_item = input("What clothing item do you want to qop?\n")
     product_image_from_database = Databases.ImageDB.choose_image(clothing_item)
-    product_color = product_image_from_database['iso']  # color of product => Orange, Red, NONE
-    product_image = product_image_from_database['product']  # prints out ObjectId => 5da941b95af7078d03a97b9c
+    product_image = product_image_from_database
     print(product_image)
     print("[Jackets] [Shirts] [Sweaters] [Sweatshirts] "
           "[Pants] [Shorts] [T-Shirts] [Hats] [Bags] [Accessories] [Skate]")
     clothing_category = input("What clothing type do you want to qop?\n")  # gets type of clothing user wants
     clothing_size = clothing_type(clothing_category, run_login_id)  # gets size of clothing of user
     open_browser()
-    product_choice(product_image)
+    iterating_through_shop(product_image)
     size_scroll(clothing_size)
     BROWSER.implicitly_wait(5000)
     add_to_cart()
